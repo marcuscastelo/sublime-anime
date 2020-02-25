@@ -132,7 +132,7 @@ def find_closest_anime_title(view, finder = None, line = None):
 		])
 		if has_found:
 			content = finder.get_line_content()
-			anime_title = sanitize_content(r'^([^\\\/\n]+):', content)
+			anime_title = sanitize_content(r'^([^\/][^\/]?[^\n]*):', content)
 			return anime_title
 		else:
 			return None
