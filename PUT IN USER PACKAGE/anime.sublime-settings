@@ -1,0 +1,4 @@
+// These settings override both User and Default settings for the anime syntax
+{
+	"auto_complete_selector": "text.anime -string -comment -constant",	
+}
