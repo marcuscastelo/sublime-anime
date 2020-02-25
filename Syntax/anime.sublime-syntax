@@ -1,0 +1,79 @@
+%YAML 1.2
+---
+# See http://www.sublimetext.com/docs/3/syntax.html
+name: AnimeSyntax
+file_extensions: [anl]
+scope: text.anime
+
+contexts:
+  # The prototype context is prepended to all contexts but those setting
+  # meta_include_prototype: false.
+  prototype:
+    - match: aaabbbaaa
+      scope: invalid.deprecated.txt
+
+  main:
+    # The main context is the initial starting point of our syntax.
+    # Include other contexts from here (or specify them directly).
+
+
+    # Matches Dates
+    - match: '\b\d{2}\/\d{2}\/\d{4}\b'
+      scope: variable.parameter.txt
+
+    # Matches Watch Time and episode number
+    - match: '\b\d{2}:\d{2}\s+\-\s+\d{2}:\d{2}\b'
+      push: s_watch_time_ep
+
+    # Matches keywords
+    - match: \[
+      push: keywords
+
+    # Matches Comments
+    - match: '//'
+      scope: punctuation.definition.comment.example-c
+      push:
+        # This is an anonymous context push for brevity.
+        - meta_scope: comment.line.double-slash.example-c
+        - match: $\n?
+          pop: true
+
+    # Matches company
+    - match: '{'
+      push: company
+
+    # Matches Anime Titles
+    - match: '^[^\\\n]+:'
+      scope: variable.function.txt
+
+
+  #For titles scope: variable.function.txt
+
+  s_watch_time_ep:
+    - meta_scope: entity.name.class
+    - match: '[^ 0-9\-]'
+      scope: invalid.deprecated
+      pop: true
+    - match: '\b[\d.,]{2,}\b'
+      scope: constant.numeric.complex.imaginary.txt
+      pop: true
+    - match: '--'
+      scope: markup.bold.txt storage.modifier
+      pop: true
+    - match: '\n'
+      scope: invalid.illegal
+
+  keywords:
+    - meta_scope: markup.bold.txt markup.deleted.txt
+    - match: '\]'
+      pop: true
+
+  company:
+    - meta_scope: markup.bold string.quoted
+    - match: '}'
+      pop: true
+    - match: '\n'
+      scope: invalid.illegal
+      pop: true
+
+

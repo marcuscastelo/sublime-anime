@@ -1,0 +1,21 @@
+ 
+[
+    {
+        "id": "anime",
+        "caption": "Anime List Hacks",
+        "children": [
+            {
+                "caption": "Insert date",
+                "command": "anime_date"
+            },
+            {
+                "caption": "Insert time",
+                "command": "anime_time",
+            },
+            {
+                "caption": "Insert last title",
+                "command": "anime_title",
+            }
+        ]
+    }
+]

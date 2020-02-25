@@ -1,0 +1,6 @@
+[
+	{"keys": ["alt+t"], "command": "anime_time"},
+	{"keys": ["alt+d"], "command": "anime_date"},
+	{"keys": ["alt+s"], "command": "anime_title"},
+	{"keys": ["alt+l"], "command": "anime_last_ep"}
+]
