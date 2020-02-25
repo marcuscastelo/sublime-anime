@@ -46,8 +46,7 @@ def get_date():
 	return text
 
 
-
-## LINE SEARCHINGS
+## LINE SEARCHING
 
 def sanitize_content(REGEX, anime_title):
 	res = re.search(REGEX, anime_title)
@@ -156,7 +155,6 @@ def find_last_episode(view, finder = None, line = None):
 
 
 def list_all_anime(view):
-
 	animes = set()
 	finder = LineFinder(view)
 	while finder.has_previous_line():
