@@ -7,7 +7,7 @@ import re
 
 def is_anime(view):
 	full_name = view.file_name()
-	res = re.search(r'([^\/]+)$', full_name)
+	res = re.search(r'([^\/\\]+)$', full_name)
 	return res and res.group(1) == 'anilist.anl' or False
 
 ### CURSOR UTILS
