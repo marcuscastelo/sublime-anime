@@ -166,3 +166,31 @@ def list_all_anime(view):
 			animes.add(anime_title)
 		finder.rewind()
 	return list(animes)
+
+def list_all_friends(view):
+	friends = set()
+	finder = LineFinder(view)
+	while finder.has_previous_line():
+		friend_content = finder.get_line_content()
+		regex_friend = re.search(r'\{([^}]+)\}', friend_content)
+		if regex_friend:
+			separated_by_commas = regex_friend.group(1)
+			friend_names = separated_by_commas.split(', ')
+			for name in friend_names:
+				friends.add(name)
+		finder.rewind()
+	return list(friends)
+
+def get_text_from_start_to_cursor(view):
+	finder = LineFinder(view)
+	line = finder.get_current_line()
+
+	start = line.begin()
+	cursor = view.sel()[0].begin()
+
+	length = cursor-start
+	content = finder.get_line_content()
+	if len(content) > length:
+		return content[0:length]
+	else:
+		return content

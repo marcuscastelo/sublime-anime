@@ -1,19 +1,28 @@
 import sublime
 import sublime_plugin
 
-from Anime.utils import is_cursor_at_first_word, list_all_anime, is_anime, get_time
+import re
 
-completions = []
+from Anime.utils import *
+
+anime_completions = []
+friend_completions = []
 def update_animes(view):
-	global completions
+	global anime_completions
 	animes = list_all_anime(view)
 
-	completions = [[a,a+':\n\n'] for a in animes]
+	anime_completions = [[a,a+':\n\n'] for a in animes]
 
-def add_current_time(view):
-	currTime = get_time(False)
-	textTime = get_time(is_cursor_at_first_word(view))
-	completions.append([currTime, textTime])
+def update_friends(view):
+	global friend_completions
+	friends = list_all_friends(view)
+
+	friend_completions = [[f,f] for f in friends]
+	pass
+
+def is_in_friend_curly_brackets(view):
+	typed_so_far = get_text_from_start_to_cursor(view)
+	return None != re.match(r'^(?:(?!\})[^{\n])*\{(?:(?!\})[^{\n])*$', typed_so_far)
 
 
 class AnimeEventListener(sublime_plugin.EventListener):
@@ -21,20 +30,26 @@ class AnimeEventListener(sublime_plugin.EventListener):
 	def on_load_async(self, view):
 		if is_anime(view):
 			update_animes(view)
+			update_friends(view)
 
 	def on_post_save_async(self, view):
 		if is_anime(view):
 			update_animes(view)
+			update_friends(view)
 
 	def on_query_completions(self, view, prefix, locations):
+
 		if not is_anime(view):
 			return []
-
 		selections = view.sel()
 		if len(selections) != 1: 
 			return []
 
-		add_current_time(view)
-
-		return (completions, sublime.INHIBIT_WORD_COMPLETIONS |
+		# Friends
+		if is_in_friend_curly_brackets(view):
+			return (friend_completions, sublime.INHIBIT_WORD_COMPLETIONS |
             sublime.INHIBIT_EXPLICIT_COMPLETIONS)
+
+		return (anime_completions, sublime.INHIBIT_WORD_COMPLETIONS |
+            sublime.INHIBIT_EXPLICIT_COMPLETIONS)
+
