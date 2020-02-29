@@ -8,7 +8,7 @@ def update_animes(view):
 	global completions
 	animes = list_all_anime(view)
 
-	completions = [[a,a+':'] for a in animes]
+	completions = [[a,a+':\n\n'] for a in animes]
 
 def add_current_time(view):
 	currTime = get_time(False)
