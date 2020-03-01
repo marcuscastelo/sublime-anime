@@ -18,26 +18,38 @@ def update_friends(view):
 	friends = list_all_friends(view)
 
 	friend_completions = [[f,f] for f in friends]
-	pass
 
 def is_in_friend_curly_brackets(view):
 	typed_so_far = get_text_from_start_to_cursor(view)
 	return None != re.match(r'^(?:(?!\})[^{\n])*\{(?:(?!\})[^{\n])*$', typed_so_far)
 
+def update_completions(view):
+	if is_anime(view):
+		update_animes(view)
+		update_friends(view)
+		
+def goto_eof(view):
+	size = view.size()
+	r = sublime.Region(size)
+	view.show(r)
+	view.sel().clear()
+	view.sel().add(r)
+
 
 class AnimeEventListener(sublime_plugin.EventListener):
-
 	def on_load_async(self, view):
 		if is_anime(view):
-			update_animes(view)
-			update_friends(view)
+			goto_eof(view)
+			update_completions(view)
 
 	def on_post_save_async(self, view):
-		if is_anime(view):
-			update_animes(view)
-			update_friends(view)
+		update_completions(view)
+		
+		
+		
 
 	def on_query_completions(self, view, prefix, locations):
+		print(anime_completions)
 
 		if not is_anime(view):
 			return []
