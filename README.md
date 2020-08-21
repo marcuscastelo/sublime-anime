@@ -1,7 +1,14 @@
 # Sublime Anime
 
-A package that contains a syntax and a plugin to help me write my anime watch list.
+A package for **Sublime Text 3** that contains a syntax and a plugin to help me write my anime watch list.
 Probably this project will not be useful to anyone besides me, but i'll make a readme just in case there's another freak like me searching for this.
+
+## Installation
+
+Go to Sublime Text 3 `Packages` folder and clone this repo as a folder with any name. Inside this new folder there will be another folder named *"PUT IN USER PACKAGE"*. Copy its content to `Packages/User` \
+**WARNING: this will override all your previous custom settings, if you wish to keep them, edit the files and merge manually**
+
+Depending on your installation and operating system, the *Package* folder may be in a different path, usually on linux it's located at `~/.config/sublime-text-3/Packages/`
 
 ## Problem
 
