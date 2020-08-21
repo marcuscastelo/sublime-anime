@@ -7,6 +7,7 @@ from Anime.utils import *
 
 anime_completions = []
 friend_completions = []
+flag_completions = []
 def update_animes(view):
 	global anime_completions
 	animes = list_all_anime(view)
@@ -19,14 +20,29 @@ def update_friends(view):
 
 	friend_completions = [[f,f] for f in friends]
 
+def update_flag_completions(view):
+	global flag_completions
+	flag_completions = [[f,f] for f in [
+		"REWATCH",
+		"REWATCH?",
+		"NOT-ANIME",
+		"NOT-IN-MAL",
+		"SCRIPT-DANGER"
+	]]
+
 def is_in_friend_curly_brackets(view):
 	typed_so_far = get_text_from_start_to_cursor(view)
 	return None != re.match(r'^(?:(?!\})[^{\n])*\{(?:(?!\})[^{\n])*$', typed_so_far)
 
+def is_in_flag_brackets(view):
+	typed_so_far = get_text_from_start_to_cursor(view)
+	return None != re.match(r'^(?:(?!\])[^[\n])*\[(?:(?!\])[^[\n])*$', typed_so_far)
+
 def update_completions(view):
-	if is_anime(view):
+	if is_anime_list(view):
 		update_animes(view)
 		update_friends(view)
+		update_flag_completions(view)
 		
 def goto_eof(view):
 	size = view.size()
@@ -38,7 +54,7 @@ def goto_eof(view):
 
 class AnimeEventListener(sublime_plugin.EventListener):
 	def on_load_async(self, view):
-		if is_anime(view):
+		if is_anime_list(view):
 			goto_eof(view)
 			update_completions(view)
 
@@ -51,7 +67,7 @@ class AnimeEventListener(sublime_plugin.EventListener):
 	def on_query_completions(self, view, prefix, locations):
 		print(anime_completions)
 
-		if not is_anime(view):
+		if not is_anime_list(view):
 			return []
 		selections = view.sel()
 		if len(selections) != 1: 
@@ -62,6 +78,11 @@ class AnimeEventListener(sublime_plugin.EventListener):
 			return (friend_completions, sublime.INHIBIT_WORD_COMPLETIONS |
             sublime.INHIBIT_EXPLICIT_COMPLETIONS)
 
+		if is_in_flag_brackets(view):
+			return (flag_completions, sublime.INHIBIT_WORD_COMPLETIONS |
+            sublime.INHIBIT_EXPLICIT_COMPLETIONS)
+
+		# Anime titles
 		return (anime_completions, sublime.INHIBIT_WORD_COMPLETIONS |
             sublime.INHIBIT_EXPLICIT_COMPLETIONS)
 

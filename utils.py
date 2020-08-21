@@ -5,7 +5,7 @@ import re
 
 ### GENERIC CHECKS
 
-def is_anime(view):
+def is_anime_list(view):
 	full_name = view.file_name()
 
 	if full_name == None: #in case no file is open
