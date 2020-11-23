@@ -27,7 +27,9 @@ def update_flag_completions(view):
 		"REWATCH?",
 		"NOT-ANIME",
 		"NOT-IN-MAL",
-		"SCRIPT-DANGER"
+		"SCRIPT-DANGER",
+		"勉強",
+		"MANGA"
 	]]
 
 def is_in_friend_curly_brackets(view):
