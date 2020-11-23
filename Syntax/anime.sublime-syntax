@@ -38,30 +38,60 @@ contexts:
         - match: $\n?
           pop: true
 
+    # Match commands such as --skip(episodes, reason)
+    - match: '^--[\w_]+\('
+      scope: variable.function
+      push: command
+
     # Matches company
     - match: '{'
       push: company
 
     # Matches Anime Titles
     - match: '^[^\\\n]+:'
-      scope: variable.function.txt
+      scope: variable.function
 
 
   #For titles scope: variable.function.txt
-
   s_watch_time_ep:
     - meta_scope: entity.name.class
-    - match: '[^ 0-9\-]'
-      scope: invalid.deprecated
-      pop: true
-    - match: '\b[\d.,]{2,}\b'
+
+    # Matches list of episodes, like [101, 101.1, 102]
+    - match: '\['
+      scope: storage.modifier
+      set: s_watch_time_ep_list
+
+    # Matches single episode, like 101.1 or 09
+    - match: '\b\d{2,}\.?\d*\b'
       scope: constant.numeric.complex.imaginary.txt
       pop: true
+
+    # If episode was interrupted, use this
     - match: '--'
       scope: markup.bold.txt storage.modifier
       pop: true
     - match: '\n'
       scope: invalid.illegal
+      pop: true
+
+  s_watch_time_ep_list:
+    - meta_scope: storage.modifier
+    - match: '\]'
+      pop: true
+
+    - match: '(?!\d{2,})\.'
+      scope: invalid.deprecated
+    - match: '\d{2,}\.?\d*'
+      scope: constant.numeric.complex.imaginary
+    - match: '[,.]\s*[,.]'
+      scope: invalid.deprecated
+    - match: '[^ ,.\d]'
+      scope: invalid.illegal
+    # - match: '\b[\d.,]{2,}\b'
+    #   scope: constant.numeric.complex.imaginary.txt
+    - match: '\n'
+      scope: invalid.illegal
+
 
   keywords:
     - meta_scope: markup.bold.txt markup.deleted.txt
@@ -76,4 +106,20 @@ contexts:
       scope: invalid.illegal
       pop: true
 
+  # Commands like --skip(episodes: number | number[], reason: string)
+  command:
+    - match: '\)'
+      scope: variable.function.anime
+      pop: true
 
+    - match: '\['
+      scope: storage.modifier.anime
+      push: s_watch_time_ep_list
+
+    - match: '\"'
+      push: command_str
+
+  command_str:
+    - meta_scope: string.quoted
+    - match: '\"'
+      pop: true
