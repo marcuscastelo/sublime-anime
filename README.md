@@ -8,11 +8,11 @@ Probably this project will not be useful to anyone besides me, but i'll make a r
 Go to Sublime Text 3 `Packages` folder and clone this repo as a folder with any name. Inside this new folder there will be another folder named *"PUT IN USER PACKAGE"*. Copy its content to `Packages/User` \
 **WARNING: this will override all your previous custom settings, if you wish to keep them, edit the files and merge manually**
 
-Depending on your installation and operating system, the *Package* folder may be in a different path, usually on linux it's located at `~/.config/sublime-text-3/Packages/`
+Depending on your installation and operating system, the *Package* folder might be in a different path, usually on linux it's located at `~/.config/sublime-text-3/Packages/`
 
 ## Problem
 
-I've been writing my episode watchtimes for a long time, and as almost all mechanical processess, it would eventually be automated. So that's what I did. \
+I've been writing my episode watchtimes for a long time, and as almost all mechanical processes, it would eventually be automated. So that's what I did. \
 List record example:
 
 ![list example](https://i.imgur.com/NNfN6ui.png)
